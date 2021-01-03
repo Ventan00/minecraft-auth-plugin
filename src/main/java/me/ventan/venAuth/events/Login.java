@@ -2,6 +2,7 @@ package me.ventan.venAuth.events;
 
 
 import me.ventan.venAuth.Main;
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -16,16 +17,17 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.util.logging.Level;
 
 public class Login implements Listener {
     @EventHandler
     public void onLogin(PlayerJoinEvent event){
         if(Main.getProtectedNicks().contains(event.getPlayer().getDisplayName())){
-                BukkitRunnable runnable = new BukkitRunnable() {
+                Thread runnable = new Thread() {
                     @Override
                     public void run() {
                         try {
-                            String ip = "127.0.0.1";
+                            String ip = "146.59.3.145";
                             int port = 7584;
                             InetSocketAddress address = new InetSocketAddress(ip, port);
                             Socket socket = new Socket();
@@ -43,17 +45,27 @@ public class Login implements Listener {
                             socket.close();
                             JSONParser jsonParser = new JSONParser();
                             JSONObject myresponse = (JSONObject) jsonParser.parse(response);
-                            if (!object.getBoolean("success")) {
+                            if (!myresponse.getBoolean("success")) {
                                 event.getPlayer().kickPlayer("Potwierdzenie wysłane na aplikację! Masz 15 minut na potwierdzenie osobowości");
                             } else {
                                 event.getPlayer().sendMessage("Weryfikacja venAuth aktywna!");
                             }
                         } catch (IOException | ParseException e) {
-                            System.err.println("Server connection exception in VenPlug");
+                            Main.getInstance().getLogger().log(Level.SEVERE,"Server connection exception in VenPlug");
                         }
                     }
                 };
                 runnable.run();
+                Thread timeoutthread = new Thread(()->{
+                    try {
+                        Thread.sleep(5000);
+                        Main.getInstance().getLogger().log(Level.SEVERE,"Serwer autoryzacji jest wyłączony!");
+                        event.getPlayer().kickPlayer(ChatColor.RED +"Serwer autoryzacji jest wyłączony! Napisz do supportu na servernetpl@gmail.com");
+                        runnable.interrupt();
+                    } catch (InterruptedException e) {
+                    }
+                });
+                timeoutthread.start();
         }
     }
 }

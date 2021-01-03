@@ -1,0 +1,9 @@
+name: venAuth
+main: me.ventan.venAuth.Main
+version: 1.0
+author: Ventan
+website: www.servernet.pl
+description: Plugin na mobilną weryfikację logowania
+commands:
+  npc:
+    description: Komenda na zarządzanie NPCtem
