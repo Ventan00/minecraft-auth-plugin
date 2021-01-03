@@ -2,8 +2,7 @@ package me.ventan.venAuth.utlis;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import org.json.JSONTokener;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -14,13 +13,12 @@ public class FileManager {
     private static List<String> protectedNicks =  new ArrayList<>();
     private static FileManager instance =  new FileManager();
     private FileManager(){
-        JSONParser jsonParser = new JSONParser();
         try (FileReader reader = new FileReader("ops.json"))
         {
-            Object obj = jsonParser.parse(reader);
-            JSONArray ops = (JSONArray) obj;
+            JSONTokener tokener = new JSONTokener(reader);
+            JSONArray ops = new JSONArray(tokener);
             ops.forEach( op -> protectedNicks.add(((JSONObject)op).getString("name")));
-        } catch (IOException | ParseException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
