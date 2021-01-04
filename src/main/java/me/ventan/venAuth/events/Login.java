@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -43,14 +44,14 @@ public class Login implements Listener {
                             dos.writeUTF(object.toString());
                             String response = dis.readUTF();
                             socket.close();
-                            JSONParser jsonParser = new JSONParser();
-                            JSONObject myresponse = (JSONObject) jsonParser.parse(response);
+                            JSONTokener tokener = new JSONTokener(response);
+                            JSONObject myresponse = new JSONObject(tokener);
                             if (!myresponse.getBoolean("success")) {
                                 event.getPlayer().kickPlayer("Potwierdzenie wysłane na aplikację! Masz 15 minut na potwierdzenie osobowości");
                             } else {
                                 event.getPlayer().sendMessage("Weryfikacja venAuth aktywna!");
                             }
-                        } catch (IOException | ParseException e) {
+                        } catch (IOException e) {
                             Main.getInstance().getLogger().log(Level.SEVERE,"Server connection exception in VenPlug");
                         }
                     }
