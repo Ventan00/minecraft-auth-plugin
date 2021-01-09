@@ -41,7 +41,7 @@ public class Login implements Listener {
                         }
                     });
                     try {
-                        String ip = "146.59.3.145";
+                        String ip = "77.55.209.66";
                         int port = 7584;
                         InetSocketAddress address = new InetSocketAddress(ip, port);
                         Socket socket = new Socket();

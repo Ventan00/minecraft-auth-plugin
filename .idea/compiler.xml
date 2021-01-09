@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="venAuthPlugin" />
+        <module name="minecraft-auth-plugin" />
       </profile>
     </annotationProcessing>
   </component>
