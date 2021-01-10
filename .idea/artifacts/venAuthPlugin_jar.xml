@@ -2,7 +2,7 @@
   <artifact type="jar" name="venAuthPlugin:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/venAuthPlugin_jar</output-path>
     <root id="archive" name="venAuthPlugin.jar">
-      <element id="module-output" name="venAuthPlugin" />
+      <element id="module-output" name="minecraft-auth-plugin" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/json/json/20201115/json-20201115.jar" path-in-jar="/" />
     </root>
   </artifact>
