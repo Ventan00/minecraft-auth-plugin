@@ -1,0 +1,15 @@
+# Plik konfiguracyjny serwera autoryzującego.
+# Bez poprawnej ręcznej konfiguracji, plugin nie będzie działał!
+#
+server-adress: "127.0.0.1" # Adres IP serwera (na przykład 11.156.123.123) na którym będzie włączony serwer
+server-port: "7584" # Numer portu na którym będzie stał serwer
+server-password: "mySecretPassword" # Hasło potrzebne do autoryzacji
+#
+# Plugin musi mieć połączenie z bazą danych MYSQL, poniżej jest konfiguracja połączenia
+#
+mysql-server-adress: "127.0.0.1" # Adres IP serwera myqsl
+mysql-server-port: "3306" # numer portu serwera mysql
+mysql-server-database: "venAuth" # nazwa bazy danych na serwerze mysql
+mysql-server-user: "root" # nazwa uzytkownika mysql
+mysql-server-password: "password" #hasło do użytkownika MySQL
+  © 2021 GitHub, Inc.
