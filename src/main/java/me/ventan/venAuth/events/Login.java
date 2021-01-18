@@ -1,7 +1,9 @@
 package me.ventan.venAuth.events;
 
 
+import com.google.gson.JsonObject;
 import me.ventan.venAuth.Main;
+import me.ventan.venAuth.utlis.FileManager;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -26,7 +28,7 @@ import java.util.logging.Level;
 public class Login implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onLogin(PlayerJoinEvent event){
-        if(Main.getProtectedNicks().contains(event.getPlayer().getName())){
+        if(Main.getProtectedNicks().contains(event.getPlayer().getName()) && Main.getIsActive()){
             Main.getInstance().getLogger().info(ChatColor.RED+" OP player connected, sending verification request");
             Thread thread = new Thread() {
                 @Override
@@ -51,22 +53,25 @@ public class Login implements Listener {
                     };
                     authTimeout.start();
                     try {
-                        String ip = "77.55.209.66";
-                        int port = 7584;
+                        String ip = FileManager.getInstance().getIp();
+                        int port = FileManager.getInstance().getPort();
                         InetSocketAddress address = new InetSocketAddress(ip, port);
                         Socket socket = new Socket();
                         socket.connect(address);
                         DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
                         DataInputStream dis = new DataInputStream(socket.getInputStream());
                         JSONObject object = new JSONObject();
-                        object.put("function", "checkUser");
-                        object.put("ip", String.valueOf(ByteBuffer.wrap(event.getPlayer().getAddress().getAddress().getAddress()).getInt()));
-                        object.put("nick", event.getPlayer().getName());
+                        object.put("type","request");
+                        object.put("requestFor","check");
+                        JSONObject data = new JSONObject();
+                        data.put("ip",String.valueOf(ByteBuffer.wrap(event.getPlayer().getAddress().getAddress().getAddress()).getInt()));
+                        data.put("nick", event.getPlayer().getName());
+                        object.put("data",data);
                         dos.writeUTF(object.toString());
+                        dos.flush();
                         String response = dis.readUTF();
                         authTimeout.interrupt();
                         Main.getInstance().getLogger().info("Got response from serwer: "+response);
-                        socket.close();
                         JSONTokener tokener = new JSONTokener(response);
                         JSONObject myresponse = new JSONObject(tokener);
                         if (!myresponse.getBoolean("success")) {

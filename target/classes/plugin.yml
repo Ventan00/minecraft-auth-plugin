@@ -5,5 +5,6 @@ author: Ventan
 website: www.servernet.pl
 description: Plugin na mobilną weryfikację logowania
 commands:
-  npc:
-    description: Komenda na zarządzanie NPCtem
+  venAuth:
+    description: Komenda na wylaczanie plugina
+    permission: venAuth.toggle
