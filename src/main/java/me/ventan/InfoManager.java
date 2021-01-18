@@ -1,9 +1,13 @@
+package me.ventan;
+
 import org.json.JSONObject;
-import utlis.Logger;
+import me.ventan.utlis.Logger;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+
+import static me.ventan.utlis.Colors.*;
 
 public class InfoManager {
     ClientHandler caller;
@@ -14,7 +18,8 @@ public class InfoManager {
             JSONObject response = new JSONObject();
             response.put("type", "autharisation_fail");
             connection.getOutputStream().writeUTF(response.toString());
-            Logger.getInstance().addLogs("sending " + response.toString() + " to " + caller.getIP());
+            connection.getOutputStream().flush();
+            Logger.getInstance().addLogs(CYAN+"sending " + response.toString() + " to " + caller.getIP());
             connection.disconnect();
         } else {
             caller = connection;
@@ -39,7 +44,7 @@ public class InfoManager {
         boolean banOrNot = data.getBoolean("banOrNot");
         RequestManager.stopVerificationThread(ip);
         MainServer.createStatement().executeUpdate("DELETE FROM request WHERE ip = " + ip + " ;");
-        if (!banOrNot) {
+        if (banOrNot) {
             MainServer.createStatement().executeUpdate("INSERT INTO banList VALUES (" + ip + ");");
             new Thread(() -> {
                 JSONObject object = new JSONObject();
@@ -62,9 +67,11 @@ public class InfoManager {
                     } else {
                         try {
                             handler.getOutputStream().writeUTF(object1.toString());
-                            Logger.getInstance().addLogs("sending " + object1.toString() + " to " + caller.getIP());
+                            handler.getOutputStream().flush();
+                            Logger.getInstance().addLogs(CYAN+"sending " + object1.toString() + " to " + handler.getIP());
                             handler.getOutputStream().writeUTF(object.toString());
-                            Logger.getInstance().addLogs("sending " + object.toString() + " to " + caller.getIP());
+                            handler.getOutputStream().flush();
+                            Logger.getInstance().addLogs(CYAN+"sending " + object.toString() + " to " + handler.getIP());
                         } catch (IOException e) {
                             Logger.getInstance().addLogs(e);
                         }
@@ -74,7 +81,8 @@ public class InfoManager {
                 for (ClientHandler handler : users) {
                     try {
                         handler.getOutputStream().writeUTF(object.toString());
-                        Logger.getInstance().addLogs("sending " + object.toString() + " to " + caller.getIP());
+                        handler.getOutputStream().flush();
+                        Logger.getInstance().addLogs(CYAN+"sending " + object.toString() + " to " + handler.getIP());
                     } catch (IOException e) {
                         Logger.getInstance().addLogs(e);
                     }
@@ -82,27 +90,28 @@ public class InfoManager {
             }).start();
         } else {
             MainServer.createStatement().executeUpdate("INSERT INTO acceptedIP VALUES (" + ip + ",CURRENT_TIMESTAMP );");
-        }
-        new Thread(() -> {
-            List<ClientHandler> users = ClientHandler.getMoblieUsers();
-            JSONObject object = new JSONObject();
-            object.put("type", "remove_request");
-            JSONObject senddata = new JSONObject();
-            senddata.put("ip", ip);
-            object.put("data", senddata);
-            for (ClientHandler handler : users) {
-                if (handler == caller) {
-                    continue;
-                } else {
-                    try {
-                        handler.getOutputStream().writeUTF(object.toString());
-                        Logger.getInstance().addLogs("sending " + object.toString() + " to " + caller.getIP());
-                    } catch (IOException e) {
-                        Logger.getInstance().addLogs(e);
+            new Thread(() -> {
+                List<ClientHandler> users = ClientHandler.getMoblieUsers();
+                JSONObject object = new JSONObject();
+                object.put("type", "remove_request");
+                JSONObject senddata = new JSONObject();
+                senddata.put("ip", ip);
+                object.put("data", senddata);
+                for (ClientHandler handler : users) {
+                    if (handler == caller) {
+                        continue;
+                    } else {
+                        try {
+                            handler.getOutputStream().writeUTF(object.toString());
+                            handler.getOutputStream().flush();
+                            Logger.getInstance().addLogs(CYAN+"sending " + object.toString() + " to " + handler.getIP());
+                        } catch (IOException e) {
+                            Logger.getInstance().addLogs(e);
+                        }
                     }
                 }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     // TODO: 11.01.2021 przetestować
@@ -124,7 +133,8 @@ public class InfoManager {
                 } else {
                     try {
                         handler.getOutputStream().writeUTF(object.toString());
-                        Logger.getInstance().addLogs("sending " + object.toString() + " to " + caller.getIP());
+                        handler.getOutputStream().flush();
+                        Logger.getInstance().addLogs(CYAN+"sending " + object.toString() + " to " + handler.getIP());
                     } catch (IOException e) {
                         Logger.getInstance().addLogs(e);
                     }
@@ -134,7 +144,8 @@ public class InfoManager {
             for (ClientHandler handler : users) {
                 try {
                     handler.getOutputStream().writeUTF(object.toString());
-                    Logger.getInstance().addLogs("sending " + object.toString() + " to " + caller.getIP());
+                    handler.getOutputStream().flush();
+                    Logger.getInstance().addLogs(CYAN+"sending " + object.toString() + " to " + handler.getIP());
                 } catch (IOException e) {
                     Logger.getInstance().addLogs(e);
                 }

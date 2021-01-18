@@ -1,5 +1,8 @@
-import utlis.FileManager;
-import utlis.Logger;
+package me.ventan;
+
+import me.ventan.utlis.ConsoleManager;
+import me.ventan.utlis.FileManager;
+import me.ventan.utlis.Logger;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -10,9 +13,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import static me.ventan.utlis.Colors.*;
+
 public class MainServer {
     private static Logger logger = Logger.getInstance();
     private static FileManager manager = FileManager.getInstance();
+    private static ConsoleManager console = ConsoleManager.getInstance();
 
 
     volatile private static Connection sqlconnection;
@@ -26,17 +32,17 @@ public class MainServer {
         server.bind(myAdress);
         logger.addLogs("Opening MySQL server connection...");
         Thread mysqlhandler = new Thread(()->{
+            Thread.currentThread().setName("Mysql refresh thread");
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 sqlconnection = DriverManager.getConnection("jdbc:mysql://"+manager.getDb_server()+":"+manager.getDb_port()+"/"+manager.getDb_name(),manager.getDb_username(),manager.getDb_password());
                 while(true){
                     Thread.sleep(58000);
-                    System.out.println("Refreshing mysql connection");
                     sqlconnection = DriverManager.getConnection("jdbc:mysql://"+manager.getDb_server()+":"+manager.getDb_port()+"/"+manager.getDb_name(),manager.getDb_username(),manager.getDb_password());
                 }
 
             } catch (ClassNotFoundException | SQLException | InterruptedException e) {
-                logger.addLogs("MySQL connector exception");
+                logger.addLogs(RED+"MySQL connector exception");
                 logger.addLogs(e);
                 Logger.getInstance().addLogs("Shutting down...");
                 System.exit(1);
@@ -45,7 +51,7 @@ public class MainServer {
         mysqlhandler.start();
         while(true){
             Socket connection = server.accept();
-            logger.addLogs("User connected "+connection.getRemoteSocketAddress());
+            logger.addLogs(GREEN+"User connected "+connection.getRemoteSocketAddress());
             new ClientHandler(connection);
         }
     }

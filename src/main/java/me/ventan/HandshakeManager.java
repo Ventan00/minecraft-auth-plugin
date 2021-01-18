@@ -1,8 +1,12 @@
+package me.ventan;
+
 import org.json.JSONObject;
-import utlis.FileManager;
-import utlis.Logger;
+import me.ventan.utlis.FileManager;
+import me.ventan.utlis.Logger;
 
 import java.io.IOException;
+
+import static me.ventan.utlis.Colors.*;
 
 public class HandshakeManager {
     ClientHandler caller;
@@ -34,7 +38,8 @@ public class HandshakeManager {
         new Thread(()->{
             try {
                 caller.getOutputStream().writeUTF(response.toString());
-                Logger.getInstance().addLogs("sending "+response.toString()+" to "+caller.getIP());
+                caller.getOutputStream().flush();
+                Logger.getInstance().addLogs(CYAN+"sending "+response.toString()+" to "+caller.getIP());
             } catch (IOException e) {
                 Logger.getInstance().addLogs(e);
             }
@@ -55,7 +60,8 @@ public class HandshakeManager {
         new Thread(()->{
             try {
                 caller.getOutputStream().writeUTF(response.toString());
-                Logger.getInstance().addLogs("sending "+response.toString()+" to "+caller.getIP());
+                caller.getOutputStream().flush();
+                Logger.getInstance().addLogs(CYAN+"sending "+response.toString()+" to "+caller.getIP());
             } catch (IOException e) {
                 Logger.getInstance().addLogs(e);
             }

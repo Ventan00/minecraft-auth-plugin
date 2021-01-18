@@ -1,18 +1,19 @@
+package me.ventan;
+
 import org.json.JSONObject;
 import org.json.JSONTokener;
-import utlis.Logger;
+import me.ventan.utlis.Logger;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketAddress;
+import java.net.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static me.ventan.utlis.Colors.*;
 
 public class ClientHandler extends Thread {
     private volatile static List<ClientHandler> moblieUsers = new ArrayList<>();
@@ -25,6 +26,7 @@ public class ClientHandler extends Thread {
     private Thread timeoutThread;
 
     public ClientHandler(Socket connection) throws IOException {
+        connection.setKeepAlive(true);
         this.connection = connection;
         dis = new DataInputStream(connection.getInputStream());
         dos = new DataOutputStream(connection.getOutputStream());
@@ -32,11 +34,12 @@ public class ClientHandler extends Thread {
         Thread timeout = new Thread(() -> {
             ClientHandler clientHandler = this;
             try {
+                Thread.currentThread().setName("auhorization thread for "+connection.getRemoteSocketAddress().toString());
                 Thread.sleep(10000);
                 JSONObject authorization_fail = new JSONObject();
                 authorization_fail.put("type", "authorisation_fail");
-                Logger.getInstance().addLogs("Got response from sql, prepering to send data");
                 dos.writeUTF(authorization_fail.toString());
+                dos.flush();
                 clientHandler.disconnect();
             } catch (InterruptedException | IOException e) {
                 if (!(e instanceof InterruptedException))
@@ -46,6 +49,7 @@ public class ClientHandler extends Thread {
         timeout.start();
         timeoutThread = timeout;
         unknownUsers.add(this);
+        this.setName("Client thread for "+connection.getRemoteSocketAddress().toString());
     }
 
     public static List<ClientHandler> getMoblieUsers() {
@@ -73,30 +77,31 @@ public class ClientHandler extends Thread {
         try {
             while (!Thread.currentThread().isInterrupted()) {
                 String temp = dis.readUTF();
-                Logger.getInstance().addLogs("Got: " + temp + " from " + connection.getRemoteSocketAddress());
+                Logger.getInstance().addLogs(YELLOW+"Got: " + temp + " from " + connection.getRemoteSocketAddress());
                 JSONObject message = new JSONObject(new JSONTokener(temp));
                 String type = message.getString("type");
                 switch (type) {
                     case "handshake": {
-                        System.out.println("managing handshake");
                         new HandshakeManager(this, message);
                         break;
                     }
                     case "info": {
-                        System.out.println("managing info");
                         new InfoManager(this, message);
                         break;
                     }
                     case "request": {
-                        System.out.println("managing request");
                         new RequestManager(this, message);
+                        break;
+                    }
+                    case "ping":{
+                        System.out.println("got ping from server");
                         break;
                     }
                 }
             }
         } catch (IOException | SQLException e) {
-            if (e instanceof EOFException) {
-                Logger.getInstance().addLogs("User disconnected");
+            if (e instanceof EOFException || e instanceof SocketException) {
+                Logger.getInstance().addLogs(RED+"User disconnected");
                 try {
                     disconnect();
                 } catch (IOException ex) {
@@ -132,7 +137,7 @@ public class ClientHandler extends Thread {
         synchronized (unknownUsers) {
             unknownUsers.remove(this);
         }
-        Logger.getInstance().addLogs("disconnecting user: " + connection.getRemoteSocketAddress().toString());
+        Logger.getInstance().addLogs(RED+"preforming actions on disconnecting user: " + connection.getRemoteSocketAddress().toString());
         connection.close();
         Thread.currentThread().interrupt();
     }
@@ -178,5 +183,14 @@ public class ClientHandler extends Thread {
 
     public String getIP() {
         return connection.getRemoteSocketAddress().toString();
+    }
+
+    public static List<ClientHandler> getUnknownUsers() {
+        return unknownUsers;
+    }
+
+    @Override
+    public String toString() {
+        return getSocket().getRemoteSocketAddress().toString();
     }
 }

@@ -12,4 +12,3 @@ mysql-server-port: "3306" # numer portu serwera mysql
 mysql-server-database: "venAuth" # nazwa bazy danych na serwerze mysql
 mysql-server-user: "root" # nazwa uzytkownika mysql
 mysql-server-password: "password" #hasło do użytkownika MySQL
-  © 2021 GitHub, Inc.

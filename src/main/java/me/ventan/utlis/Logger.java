@@ -1,4 +1,4 @@
-package utlis;
+package me.ventan.utlis;
 
 import org.codehaus.plexus.util.ExceptionUtils;
 
@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static me.ventan.utlis.Colors.*;
+
 public class Logger {
     List<String> logs = new ArrayList<>();
     private static Logger instance = new Logger();
@@ -20,7 +22,7 @@ public class Logger {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         logs.add("["+dtf.format(now)+"] "+logLine);
-        System.out.println("["+dtf.format(now)+"] "+logLine);
+        System.out.println("["+dtf.format(now)+"] "+logLine+RESET);
     }
 
     public Thread saveLogs() {
@@ -50,22 +52,24 @@ public class Logger {
         LocalDateTime now = LocalDateTime.now();
         for (int i = 0; i < logLines.length; i++) {
             addLogs(logLines[i]);
+            System.out.println("["+dtf.format(now)+"] "+logLines+RESET);
         }
     }
     public void addLogs(Exception e){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
-        System.out.println("["+dtf.format(now)+"] ");
+        System.out.println(RED+"["+dtf.format(now)+"] ");
         e.printStackTrace();
+        System.out.println(RESET);
         logs.add(e.toString());
         logs.add(ExceptionUtils.getStackTrace(e));
     }
-    public void addLogs(List<String> logList){
+    public <T> void addLogs(List<T> logList){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         logList.forEach(logLine->{
-            logs.add("["+dtf.format(now)+"] "+logLine);
-            System.out.println("["+dtf.format(now)+"] "+logLine);
+            logs.add("["+dtf.format(now)+"] "+logLine.toString());
+            System.out.println("["+dtf.format(now)+"] "+logLine+RESET);
         });
     }
 

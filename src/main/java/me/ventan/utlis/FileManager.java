@@ -1,4 +1,4 @@
-package utlis;
+package me.ventan.utlis;
 
 import org.apache.commons.io.IOUtils;
 import org.yaml.snakeyaml.Yaml;
