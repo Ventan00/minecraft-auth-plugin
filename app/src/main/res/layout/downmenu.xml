@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/banlist"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@drawable/gradient"
+    tools:context=".LoggedActivity">
+
+    <ImageButton
+        android:id="@+id/mainscreenbtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:background="@color/material_on_background_disabled"
+        android:forceHasOverlappingRendering="false"
+        android:onClick="MainScreen"
+        android:padding="10dp"
+        android:scaleType="fitCenter"
+        android:tint="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/banlistbutton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_lista_bia_a" />
+
+    <ImageButton
+        android:id="@+id/banlistbutton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:background="@color/material_on_background_disabled"
+        android:forceHasOverlappingRendering="false"
+        android:onClick="BanScreen"
+        android:padding="10dp"
+        android:scaleType="fitCenter"
+        android:tint="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/logoutbtn"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/mainscreenbtn"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_listaban_bia_a" />
+
+    <ImageButton
+        android:id="@+id/logoutbtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:background="@color/material_on_background_disabled"
+        android:forceHasOverlappingRendering="false"
+        android:onClick="LoginScreen"
+        android:padding="10dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/banlistbutton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_wyloguj_bia_a" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

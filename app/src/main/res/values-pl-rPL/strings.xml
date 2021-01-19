@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">venAuth</string>
+    <string name="StartText">Lista requestów:</string>
+    <string name="ban_text">Lista zbanowanych użytkowników:</string>
+    <string name="typ_text">typ:</string>
+    <string name="login_text">ZALOGUJ</string>
+    <string name="allow">wpuść</string>
+    <string name="ban">zbanuj</string>
+    <string name="server">Serwer</string>
+    <string name="password">Hasło</string>
+    <string name="con_err">Błąd połączenia z serwerem</string>
+    <string name="unban">ODBANUJ</string>
+</resources>

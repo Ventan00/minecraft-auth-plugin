@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">venAuth</string>
+    <string name="StartText">List of requests:</string>
+    <string name="ban_text">List of banned users:</string>
+    <string name="typ_text">type:</string>
+    <string name="login_text">LOGIN</string>
+    <string name="allow">allow</string>
+    <string name="ban">ban</string>
+    <string name="server">Server</string>
+    <string name="password">Password</string>
+    <string name="con_err">Network error!</string>
+    <string name="unban">UNBAN</string>
+</resources>
