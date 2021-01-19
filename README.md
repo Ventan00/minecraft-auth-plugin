@@ -11,7 +11,7 @@ Jest to dodatek do serwerów minecraft opartych na serwerze spigot (i pochodnych
 # Moduły  <a name="Moduły"></a>
   - [Plugin](../../tree/plugin) - moduł służący do komunikacji między serwerem minecraft a serwerem autoryzacji.
   - [Serwer](../../tree/server) - moduł służący do komunikacji między serwerem minecraft, serwerem bazy danych oraz użytkownikami smartfonów.
-  - [Plugin](../../tree/newApp) - moduł służący do zarządzania uprawnieniami dostępu do serwera. Dostepny również w [sklepie play](https://play.google.com/store/apps/details?id=ventan.app.venauth). Minimalna wersja androida 6.0 Marshmellow
+  - [Apka](../../tree/newApp) - moduł służący do zarządzania uprawnieniami dostępu do serwera. Dostepny również w [sklepie play](https://play.google.com/store/apps/details?id=ventan.app.venauth). Minimalna wersja androida 6.0 Marshmellow
 
 # Instalacja <a name="Instalacja"></a>
 ###### Szczegółowe omówienie instalacji poszczególnych elementów, oraz filmik na YT znajduje się w w [wiki](../../wiki)
