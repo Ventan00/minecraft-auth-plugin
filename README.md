@@ -1,4 +1,11 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![1.8.8](https://badgen.net/badge/minecraft/1.8.8/blue)](https://badgen.net/badge/minecraft/1.8.8/blue)
+[![version](https://badgen.net/badge/version/v1.0/red)](https://badgen.net/badge/version/v1.0/red)
+[![build](https://badgen.net/badge/build/passing/green)](https://badgen.net/badge/build/passing/green)
+[![android](https://badgen.net/badge/android%20min%20version/6.0/blue)](https://badgen.net/badge/android%20min%20version/6.0/blue)
+
 [![ServerNet](https://i.imgur.com/EwBly0J.png)](https://servernet.pl/)
+
 # venAuth Opis
 Jest to dodatek do serwerów minecraft opartych na serwerze spigot (i pochodnych), który umożliwia autoryzację administratora za pomocą smartfona
 
